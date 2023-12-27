@@ -15,10 +15,7 @@ app.use(cors());
 
 const connectDB = async () => {
   try {
-    const connect = await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    const connect = await mongoose.connect(uri);
     console.log("Connection to database established successfully!");
   } catch (error) {
     console.error("Errow connecting: ", error.message);

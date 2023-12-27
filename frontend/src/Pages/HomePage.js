@@ -13,8 +13,20 @@ import React from "react";
 import Login from "../Components/Login";
 import SignUp from "../Components/SignUp";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+    if (userInfo) {
+      console.log(userInfo);
+      navigate("/chat");
+    }
+  }, [navigate]);
+
   return (
     <Container className="home" maxW="x1" centerContent>
       <Box

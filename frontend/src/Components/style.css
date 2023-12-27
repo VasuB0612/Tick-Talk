@@ -1,0 +1,24 @@
+.search {
+  transition: 0.3s;
+  padding: 8px 10px;
+  border-radius: 8px;
+  display: flex;
+}
+
+.search:hover {
+  background-color: bisque;
+  border-radius: 8px;
+  color: rgb(28, 28, 29);
+}
+
+.boxContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100vw;
+  background-color: rgb(24, 23, 23);
+  padding: 5px 10px 5px 10px;
+}
+.drawerHeader {
+  background-color: rgb(58, 58, 60);
+  color: bisque;
+}

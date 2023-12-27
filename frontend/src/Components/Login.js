@@ -60,7 +60,7 @@ const Login = () => {
         window.location.href = "/chat";
       } catch (error) {
         toast({
-          title: "Error occured",
+          title: "Something went wrong",
           description: error.response.data.message,
           status: "error",
           duration: 5000,

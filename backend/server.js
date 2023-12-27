@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 dotenv.config();
 
 const userRoutes = require("./Routes/userRoutes");
+const chatRoutes = require("./Routes/chatRoutes");
 
 const port = process.env.PORT || 3000;
 const uri = process.env.URI;
@@ -28,6 +29,7 @@ connectDB();
 
 app.use(express.json());
 app.use("/api/user", userRoutes);
+app.use("/api/chat", chatRoutes);
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);

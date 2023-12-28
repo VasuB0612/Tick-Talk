@@ -68,14 +68,12 @@ const SideDrawer = () => {
   return (
     <div>
       <Box className="boxContainer">
-        <Tooltip label="Search users" hasArrow bg="bisque" color="black">
-          <button variant="ghost" className="search" onClick={onOpen}>
-            <IoSearch style={{ marginTop: "5px" }} />
-            <Text display={{ base: "none", md: "flex" }} px="4">
-              Search users
-            </Text>
-          </button>
-        </Tooltip>
+        <button variant="ghost" className="search" onClick={onOpen}>
+          <IoSearch style={{ marginTop: "5px" }} />
+          <Text display={{ base: "none", md: "flex" }} px="4">
+            Search users
+          </Text>
+        </button>
         <Text fontSize="2xl" fontFamily="Work Sans">
           Tick-Talk
         </Text>

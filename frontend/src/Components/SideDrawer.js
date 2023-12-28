@@ -20,6 +20,7 @@ import {
   DrawerHeader,
   DrawerBody,
   Input,
+  Spinner,
 } from "@chakra-ui/react";
 import { IoSearch } from "react-icons/io5";
 import { BellIcon } from "@chakra-ui/icons";
@@ -33,7 +34,7 @@ const SideDrawer = () => {
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loadingChat, setLoadingChat] = useState();
-  const { user } = useChat();
+  const { user, setSelectedChat, chats, setChats } = useChat();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const toast = useToast();
@@ -50,7 +51,6 @@ const SideDrawer = () => {
       const response = await axios.get(`/api/user?search=${search}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
-      console.log(response.data);
       setSearchResult(response.data);
     } catch (error) {
       toast({
@@ -63,7 +63,35 @@ const SideDrawer = () => {
     }
   };
 
-  const accessChat = () => {};
+  const createChat = async (userID) => {
+    try {
+      setLoadingChat(true);
+
+      const configuration = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const response = await axios.post("/api/chat", { userID }, configuration);
+
+      if (!chats.find((chat) => chat._id === response.data._id))
+        setChats([response.data, ...chats]);
+
+      setSelectedChat(response.data);
+      setLoadingChat(false);
+      onClose();
+    } catch (error) {
+      toast({
+        title: "Error Occurred fetching chats",
+        description: error.message,
+        status: "warning",
+        duration: 4000,
+        isClosable: true,
+        position: "bottom-left",
+      });
+    }
+  };
 
   return (
     <div>
@@ -137,23 +165,15 @@ const SideDrawer = () => {
                 }}
                 marginBottom="12px"
               />
-              {/* <Button
-                marginLeft="4px"
-                bg="rgb(36, 36, 36)"
-                color="bisque"
-                _hover={{ backgroundColor: "rgb(16, 16, 16)" }}
-                onClick={handleSearch}
-              >
-                search
-              </Button> */}
             </Box>
             {searchResult.map((USER) => (
               <UserListItem
                 key={USER._id}
                 user={USER}
-                handleFunction={() => accessChat(USER._id)}
+                handleFunction={() => createChat(USER._id)}
               />
             ))}
+            {loadingChat && <Spinner ml="auto" display="flex" />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>

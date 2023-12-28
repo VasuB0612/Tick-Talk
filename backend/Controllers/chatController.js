@@ -4,12 +4,12 @@ const generateRandomToken = require("../Config/generateToken");
 const Chat = require("../Models/ChatModels");
 const User = require("../Models/userModel");
 
-const accesChat = asyncHandler(async (req, res) => {
+const createChat = asyncHandler(async (req, res) => {
   const { userID } = req.body;
 
   if (!userID) {
     console.log("UserID not sent with request.");
-    res.sendStatus(400);
+    return res.sendStatus(400);
   }
 
   var isChat = await Chat.find({
@@ -28,7 +28,7 @@ const accesChat = asyncHandler(async (req, res) => {
   });
 
   if (isChat.length > 0) {
-    res.send(isChat[0]);
+    return res.send(isChat[0]);
   } else {
     var chatData = {
       chatName: "sender",
@@ -42,10 +42,9 @@ const accesChat = asyncHandler(async (req, res) => {
         "users",
         "-password"
       );
-      res.status(200).send(FullChat);
+      return res.status(200).send(FullChat);
     } catch (error) {
-      res.status(400);
-      throw new Error(error.message);
+      return res.status(400);
     }
   }
 });
@@ -153,7 +152,7 @@ const removeFromGroup = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
-  accesChat,
+  createChat,
   fetchChat,
   CreateGroupChat,
   renameGroupChat,

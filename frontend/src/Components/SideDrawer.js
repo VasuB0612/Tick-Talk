@@ -124,7 +124,7 @@ const SideDrawer = () => {
       </Box>
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
-        <DrawerContent bg="rgb(58, 58, 60)" color="bisque">
+        <DrawerContent bg="rgb(20, 20, 20)" color="bisque">
           <DrawerHeader borderBottomWidth="1px">Search Users</DrawerHeader>
           <DrawerBody>
             <Box display="flex" paddingBottom="2px">

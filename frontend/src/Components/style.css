@@ -2,12 +2,15 @@
   transition: 0.3s;
   padding: 8px 10px;
   border-radius: 8px;
+  background-color: rgb(40, 40, 40);
+  font-size: medium;
   display: flex;
 }
 
 .search:hover {
-  background-color: bisque;
+  background-color: rgb(238, 187, 125);
   border-radius: 8px;
+  font-size: medium;
   color: rgb(28, 28, 29);
 }
 

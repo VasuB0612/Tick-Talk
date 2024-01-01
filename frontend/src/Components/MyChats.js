@@ -2,7 +2,6 @@ import { React, useEffect, useState } from "react";
 import { useChat } from "../Context/ChatProvider";
 import { Box, useToast, Button, Stack, Text } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
-import getSender from "../Config/Sender";
 import axios from "axios";
 
 const MyChats = () => {
@@ -33,6 +32,14 @@ const MyChats = () => {
     }
   };
 
+  const getSender = (loggedUser, users) => {
+    if (users && users.length === 2 && loggedUser && loggedUser._id) {
+      return users[0]._id === loggedUser._id ? users[1].name : users[0].name;
+    } else {
+      return "";
+    }
+  };
+
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
@@ -57,7 +64,7 @@ const MyChats = () => {
         <Button
           display="flex"
           fontSize={{ base: "17px", md: "12px", lg: "17px" }}
-          marginTop="4px"
+          marginTop="9px"
         >
           <AddIcon marginRight="6px" />
           New group chat
@@ -87,7 +94,7 @@ const MyChats = () => {
                 <Text>
                   {!chat.isGroupChat
                     ? getSender(loggedUser, chat.users)
-                    : chat.chatname}
+                    : chat.chatName}
                 </Text>
               </Box>
             ))}

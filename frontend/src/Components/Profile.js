@@ -27,7 +27,6 @@ const Profile = ({ user, children }) => {
       )}
       <Modal
         size="lg"
-        color="bisque"
         bg="rgb(58, 58, 60)"
         isOpen={isOpen}
         onClose={onClose}

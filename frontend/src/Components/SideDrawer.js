@@ -4,7 +4,6 @@ import axios from "axios";
 import UserListItem from "./UserListItem";
 import "./style.css";
 import {
-  Tooltip,
   Box,
   Text,
   Menu,
@@ -21,12 +20,12 @@ import {
   DrawerBody,
   Input,
   Spinner,
+  useToast,
 } from "@chakra-ui/react";
 import { IoSearch } from "react-icons/io5";
 import { BellIcon } from "@chakra-ui/icons";
 import { FaCaretDown } from "react-icons/fa";
 import { useDisclosure } from "@chakra-ui/hooks";
-import { useToast } from "@chakra-ui/react";
 import { useChat } from "../Context/ChatProvider";
 import { useNavigate } from "react-router-dom";
 

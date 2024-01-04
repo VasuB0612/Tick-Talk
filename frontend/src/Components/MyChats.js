@@ -2,6 +2,7 @@ import { React, useEffect, useState } from "react";
 import { useChat } from "../Context/ChatProvider";
 import { Box, useToast, Button, Stack, Text } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
+import GroupChat from "./GroupChat";
 import axios from "axios";
 
 const MyChats = () => {
@@ -51,30 +52,37 @@ const MyChats = () => {
       flexDirection="column"
       alignItems="center"
       padding="3px 3px"
-      width={{ base: "100%", md: "40%" }}
+      width={{ base: "100%", md: "30%" }}
       borderRadius="lg"
+      bg="rgb(56, 56, 56)"
     >
       <Box
         width="100%"
+        pb={3}
+        px={3}
         fontSize={{ base: "20px", md: "30px" }}
         display="flex"
         justifyContent="space-between"
       >
         Chats
-        <Button
-          display="flex"
-          fontSize={{ base: "17px", md: "12px", lg: "17px" }}
-          marginTop="9px"
-        >
-          <AddIcon marginRight="6px" />
-          New group chat
-        </Button>
+        <GroupChat>
+          <Button
+            display="flex"
+            fontSize={{ base: "17px", md: "12px", lg: "17px" }}
+            marginTop="7px"
+          >
+            <AddIcon marginRight="6px" />
+            New group chat
+          </Button>
+        </GroupChat>
       </Box>
+
       <Box
+        marginxTop="20px"
         display="flex"
         flexDir="column"
         padding="5px 5px"
-        width="100%"
+        width="95%"
         height="100%"
         borderRadius="lg"
         overflowY="hidden"
@@ -89,6 +97,7 @@ const MyChats = () => {
                 px={3}
                 py={2}
                 borderRadius="lg"
+                marginBottom="12px"
                 key={chat._id}
               >
                 <Text>

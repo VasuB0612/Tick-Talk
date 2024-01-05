@@ -15,13 +15,14 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { FormControl } from "@chakra-ui/form-control";
+import UserListItem from "./UserListItem";
 
 const GroupChat = ({ children }) => {
   const { user, chats, setChats } = useChat();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupchatName, setGroupchatName] = useState("");
   const [participants, setParticipants] = useState([]);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState();
   const [searchResult, setSearchResult] = useState([]);
 
   const toast = useToast();
@@ -31,10 +32,12 @@ const GroupChat = ({ children }) => {
       const response = await axios.get(`/api/user?search=${search}`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
+      console.log(response.data);
       setSearchResult(response.data);
     } catch (error) {
       toast({
         title: "Error Occurred",
+        description: "Failed to load the search results",
         status: "warning",
         duration: 4000,
         isClosable: true,
@@ -42,6 +45,9 @@ const GroupChat = ({ children }) => {
       });
     }
   };
+
+  const handleSubmit = () => {};
+  const handleGroup = async () => {};
 
   return (
     <div>
@@ -63,25 +69,46 @@ const GroupChat = ({ children }) => {
             <FormControl>
               <Input
                 placeholder="Chat name"
+                value={groupchatName}
                 mb={3}
+                onChange={(e) => {
+                  setGroupchatName(e.target.value);
+                  handleSearch();
+                }}
+              />
+            </FormControl>
+            <FormControl>
+              <Input
+                placeholder="Users"
+                value={search}
+                mb={4}
                 onChange={(e) => {
                   setSearch(e.target.value);
                   handleSearch();
                 }}
               />
             </FormControl>
+            {/* Selected users */}
+
+            {searchResult?.slice(0, 4).map((res) => (
+              <UserListItem
+                key={res._id}
+                user={res}
+                handleFunction={() => handleGroup(res)}
+              />
+            ))}
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
-            </Button>
             <Button
               color="bisque"
               _hover={{ backgroundColor: "rgb(24, 23, 23)" }}
               variant="ghost"
+              colorScheme="blue"
+              mr={3}
+              onClick={handleSubmit}
             >
-              Secondary Action
+              Create Group
             </Button>
           </ModalFooter>
         </ModalContent>

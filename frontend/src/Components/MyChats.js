@@ -19,7 +19,6 @@ const MyChats = () => {
       };
 
       const response = await axios.get("/api/chat", configuration);
-      console.log(response.data);
       setChats(response.data);
     } catch (error) {
       toast({

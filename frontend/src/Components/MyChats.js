@@ -63,11 +63,11 @@ const MyChats = () => {
         display="flex"
         justifyContent="space-between"
       >
-        Chats
+        Nigga Chats
         <GroupChat>
           <Button
             display="flex"
-            fontSize={{ base: "17px", md: "12px", lg: "17px" }}
+            fontSize={{ base: "17px", md: "12px", lg: "15px" }}
             marginTop="7px"
           >
             <AddIcon marginRight="6px" />
@@ -92,7 +92,9 @@ const MyChats = () => {
               <Box
                 onClick={() => setSelectedChat(chat)}
                 cursor="pointer"
-                bg={selectedChat === chat ? "rgb(56, 56, 56)" : "rgb(0, 0, 0)"}
+                bg={
+                  selectedChat === chat ? "rgb(30, 30, 30)" : "rgb(10, 10, 10)"
+                }
                 px={3}
                 py={2}
                 borderRadius="lg"

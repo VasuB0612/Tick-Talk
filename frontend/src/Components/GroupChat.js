@@ -13,9 +13,11 @@ import {
   Button,
   useToast,
   Input,
+  Box,
 } from "@chakra-ui/react";
 import { FormControl } from "@chakra-ui/form-control";
 import UserListItem from "./UserListItem";
+import UserBadgeItem from "./UserBadgeItem";
 
 const GroupChat = ({ children }) => {
   const { user, chats, setChats } = useChat();
@@ -46,8 +48,62 @@ const GroupChat = ({ children }) => {
     }
   };
 
-  const handleSubmit = () => {};
-  const handleGroup = async () => {};
+  const handleSubmit = () => {
+    if (!groupchatName || !participants.length < 3) {
+      toast({
+        title: "Enter a group name and atleast 3 members",
+        description: "Failed to load the search results",
+        status: "warning",
+        duration: 4000,
+        isClosable: true,
+        position: "top",
+      });
+    } else {
+      try {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        };
+        const { data } = axios.post(
+          "/api/chat/group",
+          { chatName: groupchatName, users: JSON.stringify(participants) },
+          config
+        );
+        setChats([data, ...chats]);
+        onClose();
+        toast({
+          title: "A new group chat is created.",
+          status: "success",
+          duration: 4000,
+          isClosable: true,
+          position: "bottom",
+        });
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const handleDelete = (delUser) => {
+    setParticipants(participants.filter((part) => part._id !== delUser._id));
+  };
+
+  const handleGroup = async (user) => {
+    if (participants.includes(user)) {
+      toast({
+        title: "User already added",
+        status: "warning",
+        duration: 4000,
+        isClosable: true,
+        position: "top",
+      });
+      return;
+    } else {
+      setParticipants([...participants, user]);
+    }
+  };
 
   return (
     <div>
@@ -55,12 +111,13 @@ const GroupChat = ({ children }) => {
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent bg="rgb(58, 58, 60)" color="bisque">
+        <ModalContent bg="rgb(58, 58, 60)">
           <ModalHeader
             fontSize="35px"
             display="flex"
             fontFamily="Work Sans"
             justifyContent="center"
+            color="bisque"
           >
             Create a group chat
           </ModalHeader>
@@ -71,6 +128,7 @@ const GroupChat = ({ children }) => {
                 placeholder="Chat name"
                 value={groupchatName}
                 mb={3}
+                color="bisque"
                 onChange={(e) => {
                   setGroupchatName(e.target.value);
                   handleSearch();
@@ -82,15 +140,25 @@ const GroupChat = ({ children }) => {
                 placeholder="Users"
                 value={search}
                 mb={4}
+                color="bisque"
                 onChange={(e) => {
                   setSearch(e.target.value);
                   handleSearch();
                 }}
               />
             </FormControl>
-            {/* Selected users */}
 
-            {searchResult?.slice(0, 4).map((res) => (
+            <Box display="flex" flexWrap="wrap" width="100%">
+              {participants.map((u) => (
+                <UserBadgeItem
+                  key={user._id}
+                  user={u}
+                  handleFunction={() => handleDelete(u)}
+                />
+              ))}
+            </Box>
+
+            {searchResult.slice(0, 4).map((res) => (
               <UserListItem
                 key={res._id}
                 user={res}

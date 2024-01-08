@@ -4,6 +4,7 @@ import { Box, useToast, Button, Stack, Text } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import GroupChat from "./GroupChat";
 import axios from "axios";
+import { getSender } from "../Sender/getSender";
 
 const MyChats = () => {
   const [loggedUser, setLoggedUser] = useState();
@@ -18,8 +19,8 @@ const MyChats = () => {
         },
       };
 
-      const response = await axios.get("/api/chat", configuration);
-      setChats(response.data);
+      const { data } = await axios.get("/api/chat", configuration);
+      setChats(data);
     } catch (error) {
       toast({
         title: "Error fetching chats.",
@@ -29,14 +30,6 @@ const MyChats = () => {
         isClosable: true,
         position: "top-left",
       });
-    }
-  };
-
-  const getSender = (loggedUser, users) => {
-    if (users && users.length === 2 && loggedUser && loggedUser._id) {
-      return users[0]._id === loggedUser._id ? users[1].name : users[0].name;
-    } else {
-      return "";
     }
   };
 
@@ -63,7 +56,7 @@ const MyChats = () => {
         display="flex"
         justifyContent="space-between"
       >
-        Nigga Chats
+        My Chats
         <GroupChat>
           <Button
             display="flex"
@@ -101,11 +94,11 @@ const MyChats = () => {
                 marginBottom="12px"
                 key={chat._id}
               >
-                <Text>
+                <p>
                   {!chat.isGroupChat
                     ? getSender(loggedUser, chat.users)
                     : chat.chatName}
-                </Text>
+                </p>
               </Box>
             ))}
           </stack>

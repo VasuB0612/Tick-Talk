@@ -49,7 +49,7 @@ const GroupChat = ({ children }) => {
   };
 
   const handleSubmit = () => {
-    if (!groupchatName || !participants.length < 3) {
+    if (!groupchatName || !participants) {
       toast({
         title: "Enter a group name and atleast 3 members",
         description: "Failed to load the search results",
@@ -58,31 +58,40 @@ const GroupChat = ({ children }) => {
         isClosable: true,
         position: "top",
       });
-    } else {
-      try {
-        const config = {
-          headers: {
-            Authorization: `Bearer ${user.token}`,
-          },
-        };
-        const { data } = axios.post(
-          "/api/chat/group",
-          { chatName: groupchatName, users: JSON.stringify(participants) },
-          config
-        );
-        setChats([data, ...chats]);
-        onClose();
-        toast({
-          title: "A new group chat is created.",
-          status: "success",
-          duration: 4000,
-          isClosable: true,
-          position: "bottom",
-        });
-        console.log(data);
-      } catch (error) {
-        console.log(error);
-      }
+      return;
+    }
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = axios.post(
+        "/api/chat/group",
+        {
+          chatName: groupchatName,
+          users: JSON.stringify(participants.map((u) => u._id)),
+        },
+        config
+      );
+      setChats([data, ...chats]);
+      onClose();
+      toast({
+        title: "A new group chat is created.",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+        position: "bottom",
+      });
+      console.log(data);
+    } catch (error) {
+      toast({
+        title: "Action failed",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+        position: "bottom",
+      });
     }
   };
 
@@ -131,7 +140,6 @@ const GroupChat = ({ children }) => {
                 color="bisque"
                 onChange={(e) => {
                   setGroupchatName(e.target.value);
-                  handleSearch();
                 }}
               />
             </FormControl>

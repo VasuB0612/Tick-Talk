@@ -125,11 +125,11 @@ const SideDrawer = () => {
                 src={user.pic}
               />
             </MenuButton>
-            <MenuList bg="rgb(58, 58, 60)" border="none">
+            <MenuList bg="rgb(70, 70, 70)" border="none">
               <Profile user={user}>
                 <MenuItem
                   color="bisque"
-                  bg="rgb(58, 58, 60)"
+                  bg="rgb(70, 70, 70)"
                   _hover={{ bg: "rgb(76, 75, 75)" }}
                 >
                   My Profile
@@ -138,7 +138,7 @@ const SideDrawer = () => {
               </Profile>
               <MenuItem
                 color="bisque"
-                bg="rgb(58, 58, 60)"
+                bg="rgb(70, 70, 70)"
                 _hover={{ bg: "rgb(76, 75, 75)" }}
                 onClick={handleLogOut}
               >

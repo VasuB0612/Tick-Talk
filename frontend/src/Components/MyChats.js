@@ -6,7 +6,7 @@ import GroupChat from "./GroupChat";
 import axios from "axios";
 import { getSender } from "../Sender/getSender";
 
-const MyChats = () => {
+const MyChats = ({ fetchAgain }) => {
   const [loggedUser, setLoggedUser] = useState();
   const toast = useToast();
   const { user, selectedChat, setSelectedChat, chats, setChats } = useChat();
@@ -36,7 +36,7 @@ const MyChats = () => {
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
-  }, []);
+  }, [fetchAgain]);
 
   return (
     <Box
@@ -94,11 +94,10 @@ const MyChats = () => {
                 marginBottom="12px"
                 key={chat._id}
               >
-                <p>
-                  {!chat.isGroupChat
-                    ? getSender(loggedUser, chat.users)
-                    : chat.chatName}
-                </p>
+                {selectedChat === chat ? console.log(chat.users) : ""}
+                {chat.isGroupChat === false
+                  ? getSender(loggedUser, chat.users)
+                  : chat.chatName}
               </Box>
             ))}
           </stack>

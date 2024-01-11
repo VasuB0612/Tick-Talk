@@ -74,6 +74,7 @@ const GroupChat = ({ children }) => {
         },
         config
       );
+      console.log(data);
       setChats([data, ...chats]);
       onClose();
       toast({

@@ -2,7 +2,7 @@ import React from "react";
 import { useChat } from "../Context/ChatProvider";
 import { Box, Text, IconButton } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import { getSender, getAll } from "../Sender/getSender";
+import { getSender, getInfo } from "../Sender/getSender";
 import Profile from "./Profile";
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -30,7 +30,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             {!selectedChat.isGroupChat ? (
               <>
                 {getSender(user, selectedChat.users)}
-                <Profile user={getAll(user, selectedChat.users)} />
+                <Profile user={getInfo(user, selectedChat.users)} />
               </>
             ) : (
               <></>
@@ -55,7 +55,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           alignItems="center"
           height="100%"
         >
-          <Text fontSize="3xl" fontFamily="Work Sans">
+          <Text
+            fontSize="3xl"
+            fontFamily="Work Sans"
+            textShadow="3px 3px 5px rgb(10, 10, 10)"
+          >
             Select a chat.
           </Text>
         </Box>

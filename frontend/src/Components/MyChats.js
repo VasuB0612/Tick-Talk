@@ -62,6 +62,9 @@ const MyChats = ({ fetchAgain }) => {
             display="flex"
             fontSize={{ base: "17px", md: "12px", lg: "15px" }}
             marginTop="7px"
+            color="bisque"
+            bg="rgb(30, 30, 30)"
+            _hover={{ backgroundColor: "rgb(20, 20, 20)", color: "bisque" }}
           >
             <AddIcon marginRight="6px" />
             New group chat

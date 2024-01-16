@@ -67,7 +67,7 @@ const GroupChat = ({ children }) => {
         },
       };
       const { data } = axios.post(
-        "/api/chat/group",
+        "http://localhost:5000/api/chat/group",
         {
           chatName: groupchatName,
           users: JSON.stringify(participants.map((u) => u._id)),

@@ -12,6 +12,7 @@ import {
   ModalHeader,
   Image,
   Text,
+  Avatar,
 } from "@chakra-ui/react";
 import { ViewIcon } from "@chakra-ui/icons";
 
@@ -54,10 +55,10 @@ const Profile = ({ user, children }) => {
               src={user.pic}
               alt={user.name}
               boxSize="150px"
+              // backgroundColor="red"
               // margin="auto"
             />
             <Text
-              // margin="auto"
               fontSize={{ base: "28px", md: "27px" }}
               fontFamily="Work Sans"
             >

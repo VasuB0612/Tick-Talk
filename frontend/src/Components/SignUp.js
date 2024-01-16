@@ -87,7 +87,7 @@ const SignUp = () => {
     } else {
       try {
         const response = await axios.post(
-          "/api/user/signup",
+          "http://localhost:5000/api/user/signup",
           { name, email, password, pic },
           {
             headers: {

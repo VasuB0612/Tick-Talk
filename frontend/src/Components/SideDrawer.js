@@ -47,9 +47,12 @@ const SideDrawer = () => {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`/api/user?search=${search}`, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
+      const response = await axios.get(
+        `http://localhost:5000/api/user?search=${search}`,
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
       setSearchResult(response.data);
     } catch (error) {
       toast({
@@ -72,7 +75,11 @@ const SideDrawer = () => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.post("/api/chat", { userID }, configuration);
+      const { data } = await axios.post(
+        "http://localhost:5000/api/chat",
+        { userID },
+        configuration
+      );
 
       if (!chats.find((chat) => chat._id === data._id))
         setChats([data, ...chats]);

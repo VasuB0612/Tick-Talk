@@ -31,9 +31,12 @@ const GroupChat = ({ children }) => {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`/api/user?search=${search}`, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
+      const response = await axios.get(
+        `http://localhost:5000/api/user?search=${search}`,
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
       console.log(response.data);
       setSearchResult(response.data);
     } catch (error) {

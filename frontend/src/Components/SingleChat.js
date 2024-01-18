@@ -33,13 +33,30 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 <Profile user={getInfo(user, selectedChat.users)} />
               </>
             ) : (
-              <></>
+              <>
+                {/* {selectedChat.chatName.toUpperCase()}
+                <UpdateGroupChatModal
+                  fetchAgain={fetchAgain}
+                  setFetchAgain={setFetchAgain}
+                /> */}
+              </>
             )}
           </Text>
+          {/* <Box
+            display="flex"
+            flexDir="column"
+            justifyContent="flex-end"
+            p={3}
+            width="100%"
+            height="100%"
+            borderRadius="lg"
+          >
+            Messages Here
+          </Box> */}
           <Box
             display="flex"
             flexDir="column"
-            // justifyContent="flex-end"
+            justifyContent="flex-end"
             // p={6}
             bg="rgb(20, 20, 20)"
             height="95%"

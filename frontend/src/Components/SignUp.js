@@ -104,6 +104,7 @@ const SignUp = () => {
             position: "top",
           });
           console.log(response);
+          window.location.reload();
           setLoading(false);
           setName("");
           setEmail("");

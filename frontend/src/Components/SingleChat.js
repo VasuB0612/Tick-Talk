@@ -27,6 +27,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               display={{ base: "flex", md: "none" }}
               icon={<ArrowBackIcon />}
               onClick={() => setSelectedChat("")}
+              color="bisque"
+              backgroundColor="rgb(30, 30, 30)"
+              _hover={{ bg: "black" }}
             />
             {!selectedChat.isGroupChat ? (
               <>

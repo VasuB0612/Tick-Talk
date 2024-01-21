@@ -29,7 +29,36 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
 
   const handleRemove = () => {};
 
-  const handleRename = () => {};
+  const handleRename = async () => {
+    if (!groupChatName) {
+      return;
+    }
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${user.token}` },
+      };
+      const chatID = selectedChat._id;
+
+      const { data } = await axios.put(
+        "http://localhost:5000/api/chat/groupRename",
+        { chatId: chatID, chatName: groupChatName },
+        config
+      );
+
+      setSelectedChat(data);
+      setFetchAgain(!fetchAgain);
+    } catch (error) {
+      toast({
+        title: "Error Occured",
+        description: error.response.data.message,
+        status: "error",
+        description: "Failed to load the chats",
+        duration: 4000,
+        isClosable: true,
+        position: "top-left",
+      });
+    }
+  };
 
   const handleSearch = async () => {
     try {
@@ -66,7 +95,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent bg="rgb(58, 58, 59)">
+        <ModalContent color="bisque" bg="rgb(58, 58, 59)">
           <ModalHeader color="bisque" fontFamily="Work Sans">
             {selectedChat.chatName}
           </ModalHeader>
@@ -81,6 +110,8 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
                 />
               ))}
             </Box>
+
+            {/* Renaming the group */}
             <FormControl display="flex">
               <Input
                 placeHolder="Chat Name"
@@ -91,6 +122,8 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
               />
               <Button onClick={handleRename}>Update</Button>
             </FormControl>
+
+            {/* Adding a member to the group */}
             <FormControl>
               <Input
                 value={search}
@@ -109,9 +142,9 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
               bg="rgb(40, 40, 40)"
               _hover={{ backgroundColor: "rgb(30, 30, 30)" }}
               mr={3}
-              onClick={onClose}
+              onClick={handleRemove(user)}
             >
-              Close
+              Leave
             </Button>
           </ModalFooter>
         </ModalContent>

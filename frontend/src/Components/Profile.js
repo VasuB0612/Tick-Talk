@@ -55,8 +55,6 @@ const Profile = ({ user, children }) => {
               src={user.pic}
               alt={user.name}
               boxSize="150px"
-              // backgroundColor="red"
-              // margin="auto"
             />
             <Text
               fontSize={{ base: "28px", md: "27px" }}

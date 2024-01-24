@@ -18,6 +18,7 @@ import { useChat } from "../Context/ChatProvider";
 import UserBadgeItem from "./UserBadgeItem";
 import axios from "axios";
 import { Toast } from "@chakra-ui/react";
+import UserListItem from "./UserListItem";
 
 const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
   const [groupChatName, setGroupChatName] = useState();
@@ -28,6 +29,8 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
   const toast = useToast();
 
   const handleRemove = () => {};
+
+  const handleAddUser = () => {};
 
   const handleRename = async () => {
     if (!groupChatName) {
@@ -60,16 +63,20 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
-  const handleSearch = async () => {
+  const handleSearch = async (query) => {
+    setSearch(query);
+    if (!query) {
+      return;
+    }
     try {
-      const response = await axios.get(
+      const { data } = await axios.get(
         `http://localhost:5000/api/user?search=${search}`,
         {
           headers: { Authorization: `Bearer ${user.token}` },
         }
       );
-      console.log(response.data);
-      setSearchResults(response.data);
+      console.log(data);
+      setSearchResults(data);
     } catch (error) {
       toast({
         title: "Error Occurred",
@@ -126,14 +133,19 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
             {/* Adding a member to the group */}
             <FormControl>
               <Input
-                value={search}
                 placeHolder="Add a member"
                 onChange={(e) => {
-                  setSearch(e.target.value);
-                  handleSearch();
+                  handleSearch(e.target.value);
                 }}
               />
             </FormControl>
+            {searchResults.slice(0, 4).map((res) => (
+              <UserListItem
+                key={res._id}
+                user={res}
+                handleFunction={() => handleAddUser(res)}
+              />
+            ))}
           </ModalBody>
 
           <ModalFooter>

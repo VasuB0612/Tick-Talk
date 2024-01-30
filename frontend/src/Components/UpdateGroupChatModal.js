@@ -23,14 +23,60 @@ import UserListItem from "./UserListItem";
 const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
   const [groupChatName, setGroupChatName] = useState();
   const [search, setSearch] = useState();
-  const [searchResults, setSearchResults] = useState();
+  const [searchResults, setSearchResults] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { selectedChat, setSelectedChat, user } = useChat();
   const toast = useToast();
 
   const handleRemove = () => {};
 
-  const handleAddUser = () => {};
+  const handleAddUser = (user) => {
+    const addUser = selectedChat.users.find((u) => u._id === user._id);
+    if (addUser) {
+      toast({
+        title: "User Already logged in",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
+    if (selectedChat.groupAdmin._id !== user._id) {
+      toast({
+        title: "Only an admin can add someone to the group",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+      return;
+    }
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      const { data } = axios.put(
+        "http://localhost:5000/api/chat/addMember",
+        { userID: user._id, chatID: selectedChat._id },
+        config
+      );
+
+      setSelectedChat(data);
+      setFetchAgain(!fetchAgain);
+    } catch (error) {
+      toast({
+        title: "Error Occured!!",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+    }
+  };
 
   const handleRename = async () => {
     if (!groupChatName) {
@@ -63,11 +109,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
-  const handleSearch = async (query) => {
-    setSearch(query);
-    if (!query) {
-      return;
-    }
+  const handleSearch = async () => {
     try {
       const { data } = await axios.get(
         `http://localhost:5000/api/user?search=${search}`,
@@ -135,11 +177,12 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
               <Input
                 placeHolder="Add a member"
                 onChange={(e) => {
-                  handleSearch(e.target.value);
+                  setSearch(e.target.value);
+                  handleSearch();
                 }}
               />
             </FormControl>
-            {searchResults.slice(0, 4).map((res) => (
+            {searchResults.slice(0, 3).map((res) => (
               <UserListItem
                 key={res._id}
                 user={res}

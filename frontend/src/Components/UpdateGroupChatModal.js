@@ -28,13 +28,11 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
   const { selectedChat, setSelectedChat, user } = useChat();
   const toast = useToast();
 
-  const handleRemove = () => {};
-
-  const handleAddUser = (user) => {
-    const addUser = selectedChat.users.find((u) => u._id === user._id);
+  const handleAddUser = async (USER) => {
+    const addUser = selectedChat.users.find((u) => u._id === USER._id);
     if (addUser) {
       toast({
-        title: "User Already logged in",
+        title: "User Already in the group",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -42,15 +40,8 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
       });
       return;
     }
-    if (selectedChat.groupAdmin._id !== user._id) {
-      toast({
-        title: "Only an admin can add someone to the group",
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-        position: "bottom",
-      });
-      return;
+    if (selectedChat.groupAdmin._id !== USER._id) {
+      console.log(selectedChat.groupAdmin, USER);
     }
     try {
       const config = {
@@ -59,9 +50,9 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
         },
       };
 
-      const { data } = axios.put(
+      const { data } = await axios.put(
         "http://localhost:5000/api/chat/addMember",
-        { userID: user._id, chatID: selectedChat._id },
+        { userID: USER._id, chatID: selectedChat._id },
         config
       );
 
@@ -77,6 +68,8 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
       });
     }
   };
+
+  const handleRemove = async (userRemove) => {};
 
   const handleRename = async () => {
     if (!groupChatName) {
@@ -155,7 +148,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
                 <UserBadgeItem
                   key={user._id}
                   user={u}
-                  handleFunction={() => handleRemove(u._id)}
+                  handleFunction={() => handleRemove(u)}
                 />
               ))}
             </Box>
@@ -197,7 +190,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
               bg="rgb(40, 40, 40)"
               _hover={{ backgroundColor: "rgb(30, 30, 30)" }}
               mr={3}
-              onClick={handleRemove(user)}
+              // onClick={handleRemove(user)}
             >
               Leave
             </Button>

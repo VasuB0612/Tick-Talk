@@ -69,7 +69,43 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
-  const handleRemove = async (userRemove) => {};
+  const handleRemove = async (userRemove) => {
+    if (
+      selectedChat.groupAdmin._id !== user._id &&
+      userRemove._id !== user._id
+    ) {
+      toast({
+        title: "Only admins can  remove participants!!",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
+    }
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+
+      const { data } = await axios.put(
+        "http://localhost:5000/api/chat/remMember",
+        { userID: userRemove._id, chatID: selectedChat._id },
+        config
+      );
+
+      userRemove._id === user._id ? setSelectedChat() : setSelectedChat(data);
+    } catch (error) {
+      toast({
+        title: "Error Occured!!",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
+    }
+  };
 
   const handleRename = async () => {
     if (!groupChatName) {

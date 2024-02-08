@@ -1,4 +1,4 @@
-import { IconButton, useDisclosure, useToast } from "@chakra-ui/react";
+import { IconButton, Spinner, useDisclosure, useToast } from "@chakra-ui/react";
 import { React, useState } from "react";
 import {
   Modal,
@@ -12,6 +12,7 @@ import {
   Button,
   Input,
   FormControl,
+  Spinner,
 } from "@chakra-ui/react";
 import { ViewIcon } from "@chakra-ui/icons";
 import { useChat } from "../Context/ChatProvider";
@@ -75,7 +76,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
       userRemove._id !== user._id
     ) {
       toast({
-        title: "Only admins can  remove participants!!",
+        title: "Only admins can remove participants!!",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -211,13 +212,19 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
                 }}
               />
             </FormControl>
-            {searchResults.slice(0, 3).map((res) => (
-              <UserListItem
-                key={res._id}
-                user={res}
-                handleFunction={() => handleAddUser(res)}
-              />
-            ))}
+            {loading ? (
+              <Spinner size="lg" />
+            ) : (
+              searchResults
+                .slice(0, 3)
+                .map((res) => (
+                  <UserListItem
+                    key={res._id}
+                    user={res}
+                    handleFunction={() => handleAddUser(res)}
+                  />
+                ))
+            )}
           </ModalBody>
 
           <ModalFooter>

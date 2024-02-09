@@ -1,7 +1,9 @@
 const expressAsyncHandler = require("express-async-handler");
 const Message = require("../Models/MessageModel");
+const User = require("../Models/userModel");
+const Chat = require("../Models/ChatModels");
 
-const asyncHandler = require(expressAsyncHandler);
+const asyncHandler = expressAsyncHandler;
 
 const sendMessage = asyncHandler(async (req, res) => {
   const { chatId, content } = req.body;
@@ -18,8 +20,8 @@ const sendMessage = asyncHandler(async (req, res) => {
   };
   try {
     var message = await Message.create(newMessage);
-    message = await message.populate("sender", "name pic").execPopulate();
-    message = await message.populate("chat").execPopulate();
+    message = await message.populate("sender", "name pic");
+    message = await message.populate("chat");
     message = await User.populate(message, {
       path: "chat.Users",
       select: "name pic email",
@@ -29,10 +31,10 @@ const sendMessage = asyncHandler(async (req, res) => {
       latestMessage: message,
     });
 
-    response.json(message);
+    res.json(message);
   } catch (error) {
     res.status(400);
-    throw new Error("Could not create the message");
+    throw new Error(error);
   }
 });
 

@@ -1,4 +1,4 @@
-import { IconButton, Spinner, useDisclosure, useToast } from "@chakra-ui/react";
+import { IconButton, useDisclosure, useToast } from "@chakra-ui/react";
 import { React, useState } from "react";
 import {
   Modal,
@@ -12,7 +12,6 @@ import {
   Button,
   Input,
   FormControl,
-  Spinner,
 } from "@chakra-ui/react";
 import { ViewIcon } from "@chakra-ui/icons";
 import { useChat } from "../Context/ChatProvider";
@@ -212,19 +211,13 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
                 }}
               />
             </FormControl>
-            {loading ? (
-              <Spinner size="lg" />
-            ) : (
-              searchResults
-                .slice(0, 3)
-                .map((res) => (
-                  <UserListItem
-                    key={res._id}
-                    user={res}
-                    handleFunction={() => handleAddUser(res)}
-                  />
-                ))
-            )}
+            {searchResults.slice(0, 3).map((res) => (
+              <UserListItem
+                key={res._id}
+                user={res}
+                handleFunction={() => handleAddUser(res)}
+              />
+            ))}
           </ModalBody>
 
           <ModalFooter>

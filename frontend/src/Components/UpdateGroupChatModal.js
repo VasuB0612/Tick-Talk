@@ -20,7 +20,7 @@ import axios from "axios";
 import { Toast } from "@chakra-ui/react";
 import UserListItem from "./UserListItem";
 
-const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
+const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   const [groupChatName, setGroupChatName] = useState();
   const [search, setSearch] = useState();
   const [searchResults, setSearchResults] = useState([]);
@@ -96,6 +96,8 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
       );
 
       userRemove._id === user._id ? setSelectedChat() : setSelectedChat(data);
+      setFetchAgain(!fetchAgain);
+      fetchMessages();
     } catch (error) {
       toast({
         title: "Error Occured!!",
@@ -179,6 +181,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            {/* Removing the member from the group */}
             <Box display="flex" flexWrap="wrap" width="100%">
               {selectedChat.users.map((u) => (
                 <UserBadgeItem

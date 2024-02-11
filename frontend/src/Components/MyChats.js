@@ -100,7 +100,7 @@ const MyChats = ({ fetchAgain }) => {
                 marginBottom="12px"
                 key={chat._id}
               >
-                {console.log(chat)}
+                {/* {console.log(chat)} */}
                 {chat.isGroupChat === false
                   ? getSender(loggedUser, chat.users)
                   : chat.chatName}

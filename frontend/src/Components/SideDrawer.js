@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Profile from "./Profile";
 import axios from "axios";
 import UserListItem from "./UserListItem";
-import "./style.css";
+import "../styles/style.css";
 import {
   Box,
   Text,

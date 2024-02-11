@@ -1,4 +1,4 @@
-import { useState, React } from "react";
+import { useEffect, useState, React } from "react";
 import axios from "axios";
 import { useChat } from "../Context/ChatProvider";
 import { Box, Text, IconButton } from "@chakra-ui/react";
@@ -7,6 +7,7 @@ import { getSender, getInfo } from "../Sender/getSender";
 import Profile from "./Profile";
 import UpdateGroupChatModal from "./UpdateGroupChatModal";
 import { Spinner, FormControl, Input, useToast } from "@chakra-ui/react";
+import "../styles/messages.css";
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const { user, selectedChat, setSelectedChat } = useChat();
@@ -17,7 +18,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const textSent = async (event) => {
     if (event.key === "Enter" && newMessage) {
-      console.log(newMessage);
       try {
         const config = {
           headers: {
@@ -48,6 +48,40 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     }
   };
+
+  const fetchMessages = async () => {
+    if (!selectedChat) {
+      return;
+    }
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      setLoading(true);
+      const { data } = await axios.get(
+        `http://localhost:5000/api/messages/${selectedChat._id}`,
+        config
+      );
+      console.log(messages);
+      setMessages(data);
+      setLoading(false);
+    } catch (error) {
+      toast({
+        title: "Error Occured!!",
+        description: "Failed to load the messages",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "bottom",
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchMessages();
+  }, [selectedChat]);
 
   const typeHandler = (event) => {
     setNewMessage(event.target.value);
@@ -86,21 +120,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 <UpdateGroupChatModal
                   fetchAgain={fetchAgain}
                   setFetchAgain={setFetchAgain}
+                  fetchMessages={fetchMessages}
                 />
               </>
             )}
           </Text>
-          {/* <Box
-            display="flex"
-            flexDir="column"
-            justifyContent="flex-end"
-            p={3}
-            width="100%"
-            height="100%"
-            borderRadius="lg"
-          >
-            Messages Here
-          </Box> */}
           <Box
             display="flex"
             flexDir="column"
@@ -121,7 +145,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 margin="auto"
               />
             ) : (
-              <div>{/* Messages go here */}</div>
+              <div className="messages">{/* Messages go here */}</div>
             )}
             <FormControl onKeyDown={textSent} py={1} px={1} mt={3} isRequired>
               <Input

@@ -1,16 +1,57 @@
 import { useState, React } from "react";
+import axios from "axios";
 import { useChat } from "../Context/ChatProvider";
 import { Box, Text, IconButton } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { getSender, getInfo } from "../Sender/getSender";
 import Profile from "./Profile";
 import UpdateGroupChatModal from "./UpdateGroupChatModal";
-import { Spinner } from "@chakra-ui/react";
+import { Spinner, FormControl, Input, useToast } from "@chakra-ui/react";
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const { user, selectedChat, setSelectedChat } = useChat();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [newMessage, setNewMessage] = useState();
+  const toast = useToast();
+
+  const textSent = async (event) => {
+    if (event.key === "Enter" && newMessage) {
+      console.log(newMessage);
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        };
+
+        const { data } = await axios.post(
+          "http://localhost:5000/api/messages",
+          { content: newMessage, chatId: selectedChat._id },
+          config
+        );
+
+        console.log(data);
+
+        setNewMessage("");
+        setMessages([...messages, data]);
+      } catch (error) {
+        toast({
+          title: "Error Occured!!",
+          description: "Failed to send the message",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "bottom",
+        });
+      }
+    }
+  };
+
+  const typeHandler = (event) => {
+    setNewMessage(event.target.value);
+  };
 
   return (
     <>
@@ -76,12 +117,20 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 size="xl"
                 w={20}
                 h={20}
-                alignSelf="center"
+                alignItems="center"
                 margin="auto"
               />
             ) : (
-              <></>
+              <div>{/* Messages go here */}</div>
             )}
+            <FormControl onKeyDown={textSent} py={1} px={1} mt={3} isRequired>
+              <Input
+                placeholder="Enter your text here"
+                border="1px solid grey"
+                onChange={typeHandler}
+                value={newMessage}
+              />
+            </FormControl>
           </Box>
         </>
       ) : (

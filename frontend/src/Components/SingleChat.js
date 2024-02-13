@@ -3,7 +3,7 @@ import axios from "axios";
 import { useChat } from "../Context/ChatProvider";
 import { Box, Text, IconButton } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import { getSender, getInfo } from "../Sender/getSender";
+import { getSender, getInfo } from "../Logic/ChatLogics";
 import Profile from "./Profile";
 import UpdateGroupChatModal from "./UpdateGroupChatModal";
 import { Spinner, FormControl, Input, useToast } from "@chakra-ui/react";

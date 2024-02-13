@@ -7,6 +7,7 @@ import { getSender, getInfo } from "../Sender/getSender";
 import Profile from "./Profile";
 import UpdateGroupChatModal from "./UpdateGroupChatModal";
 import { Spinner, FormControl, Input, useToast } from "@chakra-ui/react";
+import Chat from "./Chat";
 import "../styles/messages.css";
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -145,7 +146,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 margin="auto"
               />
             ) : (
-              <div className="messages">{/* Messages go here */}</div>
+              <div className="messages">
+                <Chat messages={messages} />
+              </div>
             )}
             <FormControl onKeyDown={textSent} py={1} px={1} mt={3} isRequired>
               <Input

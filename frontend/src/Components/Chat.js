@@ -29,16 +29,19 @@ const Chat = ({ messages }) => {
             <span
               style={{
                 backgroundColor: `${
-                  m.sender._id === user._id ? "#0088cc" : "#83f28f"
+                  m.sender._id === user._id
+                    ? "rgb(40, 40, 40)"
+                    : "rgb(40, 40, 40)"
                 }`,
+                color: `${m.sender._id === user._id ? "red" : "#83f28f"}`,
                 fontFamily: "Work Sans",
                 borderRadius: "20px",
-                padding: "0px 10px",
+                padding: "3px 10px",
                 maxWidth: "75%",
-                color: "black",
-                marginBottom: "10px",
-                fontWeight: "bold",
+                marginBottom: "5px",
+                // fontWeight: "bold",
                 fontSize: "small",
+                marginLeft: `${m.sender._id !== user._id ? "1%" : "84%"}`,
               }}
             >
               {m.content}

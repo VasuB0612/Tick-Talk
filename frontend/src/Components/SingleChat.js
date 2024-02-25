@@ -90,6 +90,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   useEffect(() => {
     fetchMessages();
+    selectedChatCompare = selectedChat;
   }, [selectedChat]);
 
   useEffect(() => {
@@ -99,6 +100,18 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       setSocketConnected(true);
     });
   }, []);
+
+  useEffect(() => {
+    socket.on("uusi viesti vastaanotettu", (newMessage) => {
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare._id !== newMessage.chat._id
+      ) {
+      } else {
+        setMessages([...messages, newMessage]);
+      }
+    });
+  });
 
   const typeHandler = (event) => {
     setNewMessage(event.target.value);

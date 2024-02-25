@@ -44,11 +44,19 @@ io.on("connection", (socket) => {
 
   socket.on("setup", (userData) => {
     socket.join(userData._id);
-    console.log(userData._id);
     socket.emit("connected");
   });
   socket.on("Join chat", (room) => {
     socket.join(room);
     console.log("User joined room: " + room);
+  });
+
+  socket.on("message_sent", (data) => {
+    var chat = data.chat;
+    if (!chat.users) return console.log("users are not defined");
+    chat.users.forEach((user) => {
+      if (user._id === data.sender._id) return;
+      socket.in(user._id).emit("Uusi viesti vastaanotettu", data);
+    });
   });
 });

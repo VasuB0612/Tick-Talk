@@ -38,7 +38,7 @@ const Chat = ({ messages }) => {
                 borderRadius: "20px",
                 padding: "3px 10px",
                 maxWidth: "75%",
-                marginBottom: "5px",
+                marginTop: "5px",
                 // fontWeight: "bold",
                 fontSize: "small",
                 marginLeft: `${m.sender._id !== user._id ? "1%" : "auto"}`,

@@ -30,6 +30,25 @@ app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/messages", messageRoutes);
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server started on port ${port}`);
+});
+
+const io = require("socket.io")(server, {
+  pingTimeout: 60000,
+  cors: { origin: "http://localhost:3000" },
+});
+
+io.on("connection", (socket) => {
+  console.log("Connected to socket.io");
+
+  socket.on("setup", (userData) => {
+    socket.join(userData._id);
+    console.log(userData._id);
+    socket.emit("connected");
+  });
+  socket.on("Join chat", (room) => {
+    socket.join(room);
+    console.log("User joined room: " + room);
+  });
 });

@@ -10,11 +10,17 @@ import { Spinner, FormControl, Input, useToast } from "@chakra-ui/react";
 import Chat from "./Chat";
 import "../styles/messages.css";
 
+import io from "socket.io-client";
+
+const ENDPOINT = "http://localhost:5000";
+var socket, selectedChatCompare;
+
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const { user, selectedChat, setSelectedChat } = useChat();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState();
+  const [socketConnected, setSocketConnected] = useState(false);
   const toast = useToast();
 
   const textSent = async (event) => {
@@ -68,6 +74,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       console.log(messages);
       setMessages(data);
       setLoading(false);
+      socket.emit("Join chat", selectedChat._id);
     } catch (error) {
       toast({
         title: "Error Occured!!",
@@ -83,6 +90,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   useEffect(() => {
     fetchMessages();
   }, [selectedChat]);
+
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connection", () => {
+      setSocketConnected(true);
+    });
+  }, []);
 
   const typeHandler = (event) => {
     setNewMessage(event.target.value);

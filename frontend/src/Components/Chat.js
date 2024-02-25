@@ -41,7 +41,7 @@ const Chat = ({ messages }) => {
                 marginBottom: "5px",
                 // fontWeight: "bold",
                 fontSize: "small",
-                marginLeft: `${m.sender._id !== user._id ? "1%" : "84%"}`,
+                marginLeft: `${m.sender._id !== user._id ? "1%" : "auto"}`,
               }}
             >
               {m.content}

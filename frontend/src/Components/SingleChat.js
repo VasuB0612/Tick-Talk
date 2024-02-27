@@ -27,6 +27,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const textSent = async (event) => {
     if (event.key === "Enter" && newMessage) {
+      socket.emit("not typing", selectedChat._id);
       try {
         const config = {
           headers: {
@@ -98,8 +99,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", user);
-    socket.on("connection", () => {
+    socket.on("connection_setup", () => {
       setSocketConnected(true);
+    });
+    socket.on("typing", () => {
+      setIsTyping(true);
+    });
+    socket.on("stop typing", () => {
+      setIsTyping(false);
     });
   }, []);
 
@@ -117,6 +124,22 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const typeHandler = (event) => {
     setNewMessage(event.target.value);
+    if (!socketConnected) return;
+
+    if (!typing) {
+      setTyping(true);
+      socket.emit("typing", selectedChat._id);
+    }
+    let lastTypingTime = new Date().getTime();
+    var timerLenngth = 3000;
+    setTimeout(() => {
+      var timeNow = new Date().getTime();
+      var timeDiff = timeNow - lastTypingTime;
+      if (timeDiff >= timerLenngth && typing) {
+        socket.emit("not typing", selectedChat._id);
+        setTyping(false);
+      }
+    }, timerLenngth);
   };
 
   return (

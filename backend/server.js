@@ -46,6 +46,7 @@ io.on("connection", (socket) => {
     socket.join(userData._id);
     socket.emit("connection_setup");
   });
+
   socket.on("Join chat", (room) => {
     socket.join(room);
     console.log("User joined room: " + room);
@@ -56,7 +57,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("stop typing", (room) => {
-    socket.in(room).emit("not typing");
+    socket.in(room).emit("stop typing");
   });
 
   socket.on("message_sent", (data) => {

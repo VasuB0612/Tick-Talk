@@ -27,7 +27,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const textSent = async (event) => {
     if (event.key === "Enter" && newMessage) {
-      socket.emit("not typing", selectedChat._id);
+      socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
           headers: {
@@ -111,7 +111,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   }, []);
 
   useEffect(() => {
-    socket.on("uusi viesti vastaanotettu", (newMessage) => {
+    socket.on("Uusi viesti vastaanotettu", (newMessage) => {
       if (
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessage.chat._id
@@ -136,7 +136,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       var timeNow = new Date().getTime();
       var timeDiff = timeNow - lastTypingTime;
       if (timeDiff >= timerLenngth && typing) {
-        socket.emit("not typing", selectedChat._id);
+        socket.emit("stop typing", selectedChat._id);
         setTyping(false);
       }
     }, timerLenngth);

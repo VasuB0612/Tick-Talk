@@ -111,7 +111,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   }, []);
 
   useEffect(() => {
-    socket.on("Uusi viesti vastaanotettu", (newMessage) => {
+    socket.on("New Message Received", (newMessage) => {
       if (
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessage.chat._id

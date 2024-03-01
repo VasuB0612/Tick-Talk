@@ -65,7 +65,7 @@ io.on("connection", (socket) => {
     if (!chat.users) return console.log("users are not defined");
     chat.users.forEach((user) => {
       if (user._id === data.sender._id) return;
-      socket.in(user._id).emit("Uusi viesti vastaanotettu", data);
+      socket.in(user._id).emit("New Message Received", data);
     });
   });
 });

@@ -205,7 +205,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               </div>
             )}
             <FormControl onKeyDown={textSent} py={1} px={1} mt={3} isRequired>
-              {isTyping ? <div>Loading...</div> : ""}
+              {isTyping ? (
+                <div>Loading...</div>
+              ) : (
+                <div>This ain't working...</div>
+              )}
               <Input
                 placeholder="Enter your text here"
                 border="1px solid grey"

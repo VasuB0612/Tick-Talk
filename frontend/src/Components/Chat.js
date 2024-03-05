@@ -6,6 +6,12 @@ import { isSameSender, isLastSender } from "../Logic/ChatLogics";
 
 const Chat = ({ messages }) => {
   const { user } = useChat();
+
+  if (!user) {
+    console.log("User:", user);
+    console.log("Messages:", messages);
+  }
+
   return (
     <ScrollableFeed>
       {messages &&

@@ -44,9 +44,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
         console.log(data);
 
-        setNewMessage("");
-        setMessages([...messages, data]);
         socket.emit("message_sent", data);
+        setMessages([...messages, data]);
       } catch (error) {
         toast({
           title: "Error Occured!!",
